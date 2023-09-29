@@ -18,12 +18,11 @@ public class OffRequest extends LedRequest implements EncodeDecode<OffRequest>{
         return encoded += "!";
     }
 
-    public OffRequest decode(String encoded) throws DecodingException {
+    public void decode(String encoded) throws DecodingException {
         if (encoded.matches("^#Off [0-2]!$")){
             encoded = encoded.replace("#","");
             encoded = encoded.replace("!", "");
             String[] splitted = encoded.split(" ");
-            return new OffRequest(Integer.parseInt(splitted[1]));
         } else {
             throw new DecodingException();
         }

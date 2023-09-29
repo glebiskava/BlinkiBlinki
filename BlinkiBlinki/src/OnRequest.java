@@ -28,12 +28,11 @@ public class OnRequest extends LedRequest implements EncodeDecode<OnRequest>{
         }
     }
 
-    public OnRequest decode(String encoded) throws DecodingException {
+    public void decode(String encoded) throws DecodingException {
         if(encoded.matches("^#On [0-2] [1-30]!$")){
             encoded = encoded.replace("#","");
             encoded = encoded.replace("!", "");
             String[] splitted = encoded.split(" ");
-            return new OnRequest(Integer.parseInt(splitted[1]), Integer.parseInt(splitted[2]));
         } else {
             throw new DecodingException();
         }
