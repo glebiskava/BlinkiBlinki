@@ -1,4 +1,4 @@
-public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
+public class RgbRequest extends LedRequest {
     private int r;
     private int g;
     private int b;
@@ -11,6 +11,10 @@ public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
         this.b = b;
     }
 
+    public RgbRequest(String encoded) throws DecodingException{
+        decode(encoded);
+    }
+
     public int getR() {
         return r;
     }
@@ -21,8 +25,8 @@ public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
         return b;
     }
 
-    public String encode(RgbRequest request){
-        String encoded = "#R"+ request.getR() + "G" + request.getG() + "B" + request.getB() + "!";
+    public String encode(){
+        String encoded = "#R"+ this.getR() + "G" + this.getG() + "B" + this.getB() + "!";
         return encoded;
     }
 
@@ -47,11 +51,5 @@ public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
 
     public String toString(){
         return "R"+this.r+"G"+this.g+"B"+this.b;
-    }
-
-    public static void main(String[] args) throws DecodingException {
-        RgbRequest test = new RgbRequest(12, 15, 46);
-        test.decode("#R15G64B15!");
-        System.out.println(test);
     }
 }

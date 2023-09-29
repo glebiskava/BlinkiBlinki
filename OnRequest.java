@@ -1,4 +1,4 @@
-public class OnRequest extends LedRequest implements EncodeDecode<OnRequest>{
+public class OnRequest extends LedRequest{
     private int led;
     private int time;
     public OnRequest(int led, int time){
@@ -9,6 +9,10 @@ public class OnRequest extends LedRequest implements EncodeDecode<OnRequest>{
         this.time = time;
     }
 
+    public OnRequest(String encoded) throws DecodingException{
+        decode(encoded);
+    }
+
     public int getLed() {
         return led;
     }
@@ -16,24 +20,21 @@ public class OnRequest extends LedRequest implements EncodeDecode<OnRequest>{
         return time;
     }
 
-    public String encode(OnRequest onRequest){
-        if (onRequest instanceof LedRequest){
+    public String encode(){
             String encoded = "#";
             encoded += "On ";
-            encoded += onRequest.getLed()+" ";
-            encoded += onRequest.getTime();
+            encoded += this.getLed()+" ";
+            encoded += this.getTime();
             return encoded += "!";
-        } else {
-            throw new IllegalArgumentException("Die Request muss eine OnRequest sein!");
-        }
     }
 
-    public OnRequest decode(String encoded) throws DecodingException {
+    public void decode(String encoded) throws DecodingException {
         if(encoded.matches("^#On [0-2] [1-30]!$")){
             encoded = encoded.replace("#","");
             encoded = encoded.replace("!", "");
             String[] splitted = encoded.split(" ");
-            return new OnRequest(Integer.parseInt(splitted[1]), Integer.parseInt(splitted[2]));
+            this.led = Integer.parseInt(splitted[1]);
+            this.time = Integer.parseInt(splitted[2]);
         } else {
             throw new DecodingException();
         }
