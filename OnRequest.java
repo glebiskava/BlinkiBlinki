@@ -2,7 +2,7 @@ public class OnRequest extends LedRequest{
     private int led;
     private int time;
     public OnRequest(int led, int time){
-        if(led < 0 || led > 2){
+        if(led < 0 || led > 2 || time < 1 || time > 30){
             throw new IllegalArgumentException("Led Nr. muss zwischen 0 und 2 sein");
         }
         this.led = led;
