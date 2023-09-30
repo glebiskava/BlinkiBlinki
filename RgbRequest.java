@@ -30,6 +30,13 @@ public class RgbRequest extends LedRequest {
         return encoded;
     }
 
+    /**
+     * Method modifies an existing Request using an encoded Request or creates a new one when called from the constructor
+     * 
+     * @param encoded the Serialized version of a Request
+     * @throws DecodingException when String doesn't match the specific encoding protocol for this request
+     * @throws IllegalArgumentException if the String matches the protocol but contains invalid values
+     */
     public void decode(String encoded) throws DecodingException{
         if (encoded.matches("^#R\\d{1,3}G\\d{1,3}B\\d{1,3}!$")){{}
             encoded = encoded.replace("#", "");
@@ -49,10 +56,25 @@ public class RgbRequest extends LedRequest {
                 throw new DecodingException();
             }
         } else  {
-            throw new DecodingException();
+            throw new DecodingException("Encoding Doesn't Match");
         }
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof RgbRequest){
+            RgbRequest rgbRequest = (RgbRequest)obj;
+            if (rgbRequest.getR() == this.getR() && rgbRequest.getG() == this.getG() && rgbRequest.getB() == this.getB()){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String toString(){
         return "R"+this.r+"G"+this.g+"B"+this.b;
     }
