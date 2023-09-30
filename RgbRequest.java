@@ -34,16 +34,20 @@ public class RgbRequest extends LedRequest {
         if (encoded.matches("^#R\\d{1,3}G\\d{1,3}B\\d{1,3}!$")){{}
             encoded = encoded.replace("#", "");
             encoded = encoded.replace("!", "");
-            String[] out = new String[3];
+            Integer[] out = new Integer[3];
             String[] splitted = encoded.split("R");
             splitted = splitted[1].split("G");
             String[] splitted2 = splitted[1].split("B");
-            out[0] = splitted[0];
-            out[1] = splitted2[0];
-            out[2] = splitted2[1];
-            this.r = Integer.parseInt(out[0]);
-            this.g = Integer.parseInt(out[1]);
-            this.b = Integer.parseInt(out[2]);
+            out[0] = Integer.parseInt(splitted[0]);
+            out[1] = Integer.parseInt(splitted2[0]);
+            out[2] = Integer.parseInt(splitted2[1]);
+            if (0 <= out[0] && out[0] <= 255 && 0 <= out[1] && out[2] <= 255 && 0 <= out[2] && out[2] <= 255){
+                this.r = out[0];
+                this.g = out[1];
+                this.b = out[2];
+            } else {
+                throw new DecodingException();
+            }
         } else  {
             throw new DecodingException();
         }
