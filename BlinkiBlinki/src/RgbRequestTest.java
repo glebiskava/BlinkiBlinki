@@ -25,13 +25,7 @@ public class RgbRequestTest {
         Assertions.assertEquals(expectedResult, rgb.encode(rgb));
     }
 
-    static Stream<Arguments> rgbValues() {
-        return Stream.of(
-                Arguments.of(15, 64, 12),
-                Arguments.of(64, 64, 12),
-                Arguments.of(12, 64, 12)
-        );
-    }
+    static Stream<Arguments> rgbValues() q
 
 
 }
