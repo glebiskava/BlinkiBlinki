@@ -1,4 +1,4 @@
-public interface EncodeDecode<T extends LedRequest>{
-    String encode(T request);
-    void decode(String string) throws DecodingException;
+public interface EncodeDecode{
+    String encode();
+    void decode(String encoded) throws DecodingException;
 }

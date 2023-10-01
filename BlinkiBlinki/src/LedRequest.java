@@ -1,3 +1,3 @@
-public abstract class LedRequest{
-    
+public abstract class LedRequest implements EncodeDecode{
+
 }

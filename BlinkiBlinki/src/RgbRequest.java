@@ -1,4 +1,4 @@
-public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
+public class RgbRequest extends LedRequest {
     private int r;
     private int g;
     private int b;
@@ -11,6 +11,10 @@ public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
         this.b = b;
     }
 
+    public RgbRequest(String encoded) throws DecodingException{
+        decode(encoded);
+    }
+
     public int getR() {
         return r;
     }
@@ -21,37 +25,51 @@ public class RgbRequest extends LedRequest implements EncodeDecode<RgbRequest> {
         return b;
     }
 
-    public String encode(RgbRequest request){
-        String encoded = "#R"+ request.getR() + "G" + request.getG() + "B" + request.getB() + "!";
-        return encoded;
+    public String encode(){
+        return "#R"+ this.getR() + "G" + this.getG() + "B" + this.getB() + "!";
     }
 
+    /**
+     * Method modifies an existing Request using an encoded Request or creates a new one when called from the constructor
+     *
+     * @param encoded the Serialized version of a Request
+     * @throws DecodingException when String doesn't match the specific encoding protocol for this request
+     * @throws IllegalArgumentException if the String matches the protocol but contains invalid values
+     */
     public void decode(String encoded) throws DecodingException{
         if (encoded.matches("^#R\\d{1,3}G\\d{1,3}B\\d{1,3}!$")){{}
             encoded = encoded.replace("#", "");
             encoded = encoded.replace("!", "");
-            String[] out = new String[3];
+            Integer[] out = new Integer[3];
             String[] splitted = encoded.split("R");
             splitted = splitted[1].split("G");
             String[] splitted2 = splitted[1].split("B");
-            out[0] = splitted[0];
-            out[1] = splitted2[0];
-            out[2] = splitted2[1];
-            this.r = Integer.parseInt(out[0]);
-            this.g = Integer.parseInt(out[1]);
-            this.b = Integer.parseInt(out[2]);
+            out[0] = Integer.parseInt(splitted[0]);
+            out[1] = Integer.parseInt(splitted2[0]);
+            out[2] = Integer.parseInt(splitted2[1]);
+            if (0 <= out[0] && out[0] <= 255 && 0 <= out[1] && out[2] <= 255 && 0 <= out[2]){
+                this.r = out[0];
+                this.g = out[1];
+                this.b = out[2];
+            } else {
+                throw new DecodingException();
+            }
         } else  {
-            throw new DecodingException();
+            throw new DecodingException("Encoding Doesn't Match");
         }
     }
 
-    public String toString(){
-        return "R"+this.r+"G"+this.g+"B"+this.b;
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof RgbRequest rgbRequest){
+            return rgbRequest.getR() == this.getR() && rgbRequest.getG() == this.getG() && rgbRequest.getB() == this.getB();
+        } else {
+            return false;
+        }
     }
 
-    public static void main(String[] args) throws DecodingException {
-        RgbRequest test = new RgbRequest(12, 15, 46);
-        test.decode("#R15G64B15!");
-        System.out.println(test);
+    @Override
+    public String toString(){
+        return "R"+this.r+"G"+this.g+"B"+this.b;
     }
 }
