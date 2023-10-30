@@ -1,9 +1,9 @@
 public class OnRequest extends LedRequest{
     private int led;
     private int time;
-    public OnRequest(int led, int time){
+    public OnRequest(int led, int time) throws DecodingException {
         if(led < 0 || led > 2 || time < 1 || time > 30){
-            throw new IllegalArgumentException("Led Nr. muss zwischen 0 und 2 sein");
+            throw new DecodingException("Led Nr. muss zwischen 0 und 2 sein und die Zeit zwischen 0 und 29!");
         }
         this.led = led;
         this.time = time;
@@ -25,11 +25,12 @@ public class OnRequest extends LedRequest{
         encoded += "On ";
         encoded += this.getLed()+" ";
         encoded += this.getTime();
-        return encoded += "!";
+        return encoded + "!";
     }
 
     /**
-     * Method modifies an existing Request using an encoded Request or creates a new one when called from the constructor
+     * Method modifies an existing Request using an encoded Request or
+     * creates a new one when called from the constructor
      *
      * @param encoded the Serialized version of a Request
      * @throws DecodingException when String doesn't match the specific encoding protocol for this request
@@ -49,7 +50,7 @@ public class OnRequest extends LedRequest{
                 this.time = tmptime;
             }
         } else {
-            throw new DecodingException("Encoding Doesn't Match");
+            throw new DecodingException("Invalid encoding format for ON request");
         }
     }
 

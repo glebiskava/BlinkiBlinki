@@ -1,8 +1,8 @@
 public class OffRequest extends LedRequest{
     private int led;
-    public OffRequest(int led){
+    public OffRequest(int led) throws DecodingException {
         if(led < 0 || led > 2){
-            throw new IllegalArgumentException("Led Nr. muss zwischen 0 und 2 sein");
+            throw new DecodingException("Led Nr. muss zwischen 0 und 2 sein!");
         }
         this.led = led;
     }
@@ -23,7 +23,8 @@ public class OffRequest extends LedRequest{
     }
 
     /**
-     * Method modifies an existing Request using an encoded Request or creates a new one when called from the constructor
+     * Method modifies an existing Request using an encoded Request or
+     * creates a new one when called from the constructor
      *
      * @param encoded the Serialized version of a Request
      * @throws DecodingException when String doesn't match the specific encoding protocol for this request
@@ -36,12 +37,12 @@ public class OffRequest extends LedRequest{
             String[] splitted = encoded.split(" ");
             int tmpled = Integer.parseInt(splitted[1]);
             if( tmpled < 0 ||tmpled >2){
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(); //DecodingException mit Text Interval ungueltig
             } else {
                 this.led = tmpled;
             }
         } else {
-            throw new DecodingException("Encoding Doesn't Match");
+            throw new DecodingException("Invalid encoding format for OffRequest");
         }
     }
 

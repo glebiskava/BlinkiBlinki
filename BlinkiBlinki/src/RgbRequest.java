@@ -2,9 +2,9 @@ public class RgbRequest extends LedRequest {
     private int r;
     private int g;
     private int b;
-    public RgbRequest(int r, int g, int b){
+    public RgbRequest(int r, int g, int b) throws DecodingException {
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255){
-            throw new IllegalArgumentException("Die RGB values müssen zwischen 0 und 255 sein");
+            throw new DecodingException("Die RGB Werte müssen zwischen 0 und 255 sein");
         }
         this.r = r;
         this.g = g;
@@ -55,7 +55,7 @@ public class RgbRequest extends LedRequest {
                 throw new DecodingException();
             }
         } else  {
-            throw new DecodingException("Encoding Doesn't Match");
+            throw new DecodingException("Invalid encoding format for RGB request");
         }
     }
 
