@@ -9,6 +9,7 @@ public class RgbRequest extends LedRequest {
         this.r = r;
         this.g = g;
         this.b = b;
+        ;
     }
 
     public RgbRequest(String encoded) throws DecodingException{
