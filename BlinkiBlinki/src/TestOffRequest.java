@@ -5,6 +5,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeFalse;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestOffRequest {
@@ -19,9 +21,13 @@ public class TestOffRequest {
     @ParameterizedTest(name = "Critical: Test OFF Request encoded with: LED-{0}")
     @MethodSource("offRequestEncodeValues")
     public void Test_Encode_OFF_Request(String encoded, int led) throws DecodingException {
-        OffRequest offRequest = new OffRequest(encoded);
-        OffRequest expected = new OffRequest(led);
-        Assertions.assertEquals(offRequest, expected);
+        try {
+            OffRequest offRequest = new OffRequest(encoded);
+            OffRequest expected = new OffRequest(led);
+            Assertions.assertEquals(offRequest, expected);
+        } catch (DecodingException e) {
+            fail("Error when decoding, wrong test parameter maybe ?");
+        }
     }
 
     static Stream<Arguments> offRequestEncodeValues() {

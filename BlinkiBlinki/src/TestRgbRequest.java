@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,9 +21,13 @@ public class TestRgbRequest {
     @ParameterizedTest(name = "Critical: Test RGB Request encoded with: R-{0} G-{1} B-{2}")
     @MethodSource("rgbRequestEncodeValues")
     public void Test_Encode_RGB_Request(int r, int g, int b) throws DecodingException {
-        RgbRequest rgb = new RgbRequest(r, g, b);
-        String expectedResult = "#R" + r + "G" + g + "B" + b + "!";
-        assertEquals(expectedResult, rgb.encode());
+        try {
+            RgbRequest rgb = new RgbRequest(r, g, b);
+            String expectedResult = "#R" + r + "G" + g + "B" + b + "!";
+            assertEquals(expectedResult, rgb.encode());
+        } catch (DecodingException e) {
+            fail("Error when decoding, wrong test parameter maybe ?");
+        }
     }
 
     static Stream<Arguments> rgbRequestEncodeValues() {

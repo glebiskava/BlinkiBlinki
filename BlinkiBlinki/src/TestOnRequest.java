@@ -5,6 +5,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestOnRequest {
@@ -19,9 +20,13 @@ public class TestOnRequest {
     @MethodSource("onRequestEncodeValues")
     @ParameterizedTest(name = "Critical: Test ON Request encoded with: LED-{0} TIME-{1}")
     public void Test_Encode_ON_Request(String encoded, int led, int time) throws DecodingException {
-        OnRequest onRequest = new OnRequest(encoded);
-        OnRequest expected = new OnRequest(led, time);
-        Assertions.assertEquals(onRequest, expected);
+        try {
+            OnRequest onRequest = new OnRequest(encoded);
+            OnRequest expected = new OnRequest(led, time);
+            Assertions.assertEquals(onRequest, expected);
+        } catch (DecodingException e) {
+            fail("Error when decoding, wrong test parameter maybe ?");
+        }
     }
     static Stream<Arguments> onRequestEncodeValues() {
         return Stream.of(
